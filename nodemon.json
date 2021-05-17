@@ -1,0 +1,8 @@
+{
+  "env": {
+    "DB_USER": "Amitex",
+    "DB_PASSWORD": "Amitendu99",
+    "DB_NAME": "bookProducts",
+    "JWT_KEY": "private-key"
+  }
+}
