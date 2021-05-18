@@ -7,7 +7,7 @@ router.get("/getAddress/:userId/:addressId", authController.getAddress);
 router.post(
   "/signup",
   [
-    check("email").not().isEmpty().normalizeEmail().isEmail(),
+    check("email").not().isEmpty().isEmail(),
     check("username").not().isEmpty(),
     check("password").isLength({ min: 6 }),
     check("address").isLength({ min: 6 }),
