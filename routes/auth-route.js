@@ -31,7 +31,7 @@ router.patch(
   "/edit-profile",
   [
     check("username").not().isEmpty(),
-    check("email").not().isEmpty().normalizeEmail().isEmail(),
+    check("email").not().isEmpty().isEmail(),
     check("contactNo").not().isEmpty().isNumeric(),
   ],
   authController.editProfile
