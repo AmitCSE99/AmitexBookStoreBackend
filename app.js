@@ -47,6 +47,7 @@ app.use((error, req, res, next) => {
   res.status(error.code || 500);
   res.json({ message: error.message || "An error occured!" });
 });
+console.log(process.env.DB_USER);
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@amitexcluster.0mu70.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`

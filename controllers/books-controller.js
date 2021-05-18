@@ -4,6 +4,7 @@ const Product = require("../models/Book");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 const fs = require("fs");
+const {uploadFile,getFileStream} =require('../s3');
 
 const getBookList = async (req, res, next) => {
   let books;
@@ -16,6 +17,12 @@ const getBookList = async (req, res, next) => {
 
   res.json({ books: books.map((book) => book.toObject({ getters: true })) });
 };
+
+const getBookImage=(req,res,next)=>{
+  const key=req.params.key;
+  const readStream=getFileStream(key);
+  readStream.pipe(res);
+}
 
 const getBookById = async (req, res, next) => {
   const bookId = req.params.bookId;
@@ -53,14 +60,17 @@ const createBook = async (req, res, next) => {
   }
   const { title, price, description, stockQuantity, filter, createdBy } =
     req.body;
+    const result=await uploadFile(req.file);
+  console.log(result);
   const newBook = new Product({
     title,
     price,
     description,
-    image: req.file.path,
+    image: result.Key,
     branch: filter,
     stockQuantity,
   });
+  
   let user;
   try {
     user = await User.findById(createdBy);
@@ -191,4 +201,5 @@ exports.createBook = createBook;
 exports.getBookList = getBookList;
 exports.getBookById = getBookById;
 exports.deleteBook = deleteBook;
+exports.getBookImage=getBookImage;
 exports.getBooksByUserId = getBooksByUserId;
