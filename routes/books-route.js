@@ -5,7 +5,7 @@ const booksController = require("../controllers/books-controller");
 const fileUpload = require("../middleware/file-upload");
 const checkAuth = require("../middleware/check-auth");
 router.get("/", booksController.getBookList);
-router.get("/getImage/:key",booksController.getBookImage);
+// router.get("/getImage/:key",booksController.getBookImage);
 
 router.get("/:bookId", booksController.getBookById);
 router.get("/userproduct/:userId", booksController.getBooksByUserId);

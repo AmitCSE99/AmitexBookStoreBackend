@@ -4,7 +4,8 @@ const Product = require("../models/Book");
 const User = require("../models/User");
 const mongoose = require("mongoose");
 const fs = require("fs");
-const {uploadFile,getFileStream} =require('../s3');
+const cloudinary=require('../cloudinary');
+// const {uploadFile,getFileStream} =require('../s3');
 
 const getBookList = async (req, res, next) => {
   let books;
@@ -18,11 +19,11 @@ const getBookList = async (req, res, next) => {
   res.json({ books: books.map((book) => book.toObject({ getters: true })) });
 };
 
-const getBookImage=(req,res,next)=>{
-  const key=req.params.key;
-  const readStream=getFileStream(key);
-  readStream.pipe(res);
-}
+// const getBookImage=(req,res,next)=>{
+//   const key=req.params.key;
+//   const readStream=getFileStream(key);
+//   readStream.pipe(res);
+// }
 
 const getBookById = async (req, res, next) => {
   const bookId = req.params.bookId;
@@ -60,15 +61,16 @@ const createBook = async (req, res, next) => {
   }
   const { title, price, description, stockQuantity, filter, createdBy } =
     req.body;
-    const result=await uploadFile(req.file);
+    const result=await cloudinary.uploader.upload(req.file.path);
   console.log(result);
   const newBook = new Product({
     title,
     price,
     description,
-    image: result.Key,
+    image: result.secure_url,
     branch: filter,
     stockQuantity,
+    cloudinary_id:result.public_id
   });
   
   let user;
@@ -179,11 +181,12 @@ const deleteBook = async (req, res, next) => {
     const error = new HttpError("Could not find the book");
     return next(error);
   }
-  const imagePath = book.image;
+  const imagePath = `/uploads/images/db541740-e9f6-11eb-83bb-4baa1469afde.jpeg`;
 
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
+    await cloudinary.uploader.destroy(book.cloudinary_id);
     await book.remove({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
@@ -201,5 +204,4 @@ exports.createBook = createBook;
 exports.getBookList = getBookList;
 exports.getBookById = getBookById;
 exports.deleteBook = deleteBook;
-exports.getBookImage=getBookImage;
 exports.getBooksByUserId = getBooksByUserId;

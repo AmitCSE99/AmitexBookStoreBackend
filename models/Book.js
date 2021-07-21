@@ -8,6 +8,9 @@ const bookSchema = new Schema({
   branch: { type: String, required: true },
   stockQuantity: { type: Number, required: true },
   image: { type: String, required: true },
+  cloudinary_id:{
+    type:String,required:true
+  }
 });
 
 module.exports = mongoose.model("Book", bookSchema);

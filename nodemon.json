@@ -2,11 +2,10 @@
   "env": {
     "DB_USER": "Amitex",
     "DB_PASSWORD": "Amitendu99",
-    "DB_NAME": "bookProducts",
+    "DB_NAME": "bookStoreLocal",
     "JWT_KEY": "private-key",
-    "AWS_BUCKET_NAME":"localbucketdev",
-    "AWS_BUCKET_REGION":"ap-south-1",
-    "AWS_ACCESS_KEY":"AKIAXKARRGTDVTMNQNIY",
-    "AWS_SECRET_KEY":"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"
+    "CLOUDINARY_CLOUD_NAME":"amitex",
+    "CLOUDINARY_API_KEY":"343871253794675",
+    "CLOUDINARY_API_SECRET":"BaS1kKpXfTq7MAltE51R7PDzJ4c"
   }
 }
